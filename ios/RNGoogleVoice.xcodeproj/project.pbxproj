@@ -20,9 +20,13 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		249914FB4DF1D348622B9F5A /* libPods-RNGoogleVoice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55E444A7DC87A3DEC006D333 /* libPods-RNGoogleVoice.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		F74FD0D5214852B300EE26E8 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FD0D4214852B300EE26E8 /* AudioController.m */; };
+		F74FD0FD2148531900EE26E8 /* RNGoogleVoiceModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FD0FC2148531900EE26E8 /* RNGoogleVoiceModule.m */; };
+		F74FD1032148552100EE26E8 /* SpeechRecognitionService.m in Sources */ = {isa = PBXBuildFile; fileRef = F74FD1022148552100EE26E8 /* SpeechRecognitionService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -306,11 +310,20 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNGoogleVoice/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNGoogleVoice/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		16423A8BB4A60E0A358CFD50 /* Pods-RNGoogleVoice.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNGoogleVoice.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNGoogleVoice/Pods-RNGoogleVoice.debug.xcconfig"; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		341B8C4FA780B30930CEF5AC /* Pods-RNGoogleVoice.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNGoogleVoice.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNGoogleVoice/Pods-RNGoogleVoice.release.xcconfig"; sourceTree = "<group>"; };
+		55E444A7DC87A3DEC006D333 /* libPods-RNGoogleVoice.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNGoogleVoice.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		F74FD0D4214852B300EE26E8 /* AudioController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AudioController.m; path = RNGoogleVoice/AudioController.m; sourceTree = "<group>"; };
+		F74FD0FB214852CA00EE26E8 /* AudioController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioController.h; path = RNGoogleVoice/AudioController.h; sourceTree = "<group>"; };
+		F74FD0FC2148531900EE26E8 /* RNGoogleVoiceModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNGoogleVoiceModule.m; path = RNGoogleVoice/RNGoogleVoiceModule.m; sourceTree = "<group>"; };
+		F74FD0FE2148532A00EE26E8 /* RNGoogleVoiceModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNGoogleVoiceModule.h; path = RNGoogleVoice/RNGoogleVoiceModule.h; sourceTree = "<group>"; };
+		F74FD1012148550900EE26E8 /* SpeechRecognitionService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SpeechRecognitionService.h; path = RNGoogleVoice/SpeechRecognitionService.h; sourceTree = "<group>"; };
+		F74FD1022148552100EE26E8 /* SpeechRecognitionService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SpeechRecognitionService.m; path = RNGoogleVoice/SpeechRecognitionService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +344,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				249914FB4DF1D348622B9F5A /* libPods-RNGoogleVoice.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +410,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		112C578C2B30B82C223E5099 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				16423A8BB4A60E0A358CFD50 /* Pods-RNGoogleVoice.debug.xcconfig */,
+				341B8C4FA780B30930CEF5AC /* Pods-RNGoogleVoice.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		139105B71AF99BAD00B5F7CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,10 +445,16 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				F74FD0D4214852B300EE26E8 /* AudioController.m */,
+				F74FD0FB214852CA00EE26E8 /* AudioController.h */,
+				F74FD0FC2148531900EE26E8 /* RNGoogleVoiceModule.m */,
+				F74FD0FE2148532A00EE26E8 /* RNGoogleVoiceModule.h */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				F74FD1012148550900EE26E8 /* SpeechRecognitionService.h */,
+				F74FD1022148552100EE26E8 /* SpeechRecognitionService.m */,
 			);
 			name = RNGoogleVoice;
 			sourceTree = "<group>";
@@ -457,6 +486,7 @@
 			isa = PBXGroup;
 			children = (
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
+				55E444A7DC87A3DEC006D333 /* libPods-RNGoogleVoice.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -515,6 +545,7 @@
 				00E356EF1AD99517003FC87E /* RNGoogleVoiceTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				112C578C2B30B82C223E5099 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -545,10 +576,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNGoogleVoice" */;
 			buildPhases = (
+				1BEA768E84DD40DF75071237 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				93394DC461F792C825282117 /* [CP] Embed Pods Frameworks */,
+				AB28BE1793900050AE5C95E1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -567,6 +601,11 @@
 			attributes = {
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Facebook;
+				TargetAttributes = {
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = M33V8PY633;
+					};
+				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNGoogleVoice" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -925,6 +964,57 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		1BEA768E84DD40DF75071237 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNGoogleVoice-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		93394DC461F792C825282117 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RNGoogleVoice/Pods-RNGoogleVoice-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB28BE1793900050AE5C95E1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RNGoogleVoice/Pods-RNGoogleVoice-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RNGoogleVoice/Pods-RNGoogleVoice-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -932,7 +1022,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F74FD0D5214852B300EE26E8 /* AudioController.m in Sources */,
+				F74FD0FD2148531900EE26E8 /* RNGoogleVoiceModule.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				F74FD1032148552100EE26E8 /* SpeechRecognitionService.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -954,10 +1047,12 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16423A8BB4A60E0A358CFD50 /* Pods-RNGoogleVoice.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = M33V8PY633;
 				INFOPLIST_FILE = RNGoogleVoice/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -972,9 +1067,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 341B8C4FA780B30930CEF5AC /* Pods-RNGoogleVoice.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M33V8PY633;
 				INFOPLIST_FILE = RNGoogleVoice/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
