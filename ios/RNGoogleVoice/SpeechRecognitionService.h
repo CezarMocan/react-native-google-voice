@@ -24,6 +24,9 @@ typedef void (^SpeechRecognitionCompletionHandler)(StreamingRecognizeResponse *o
 + (instancetype) sharedInstance;
 
 - (void) streamAudioData:(NSData *) audioData
+              withLocale:(NSString*)locale
+              withApiKey:(NSString*)apiKey
+     withMaxAlternatives:(NSNumber*)alternatives
           withCompletion:(SpeechRecognitionCompletionHandler)completion;
 
 - (void) stopStreaming;

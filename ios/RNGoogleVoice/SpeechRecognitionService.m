@@ -44,6 +44,9 @@
 }
 
 - (void) streamAudioData:(NSData *) audioData
+              withLocale:(NSString*)locale
+              withApiKey:(NSString*)apiKey
+     withMaxAlternatives:(NSNumber*)alternatives
           withCompletion:(SpeechRecognitionCompletionHandler)completion {
   
   if (!_streaming) {
@@ -56,7 +59,7 @@
                                                   }];
     
     // authenticate using an API key obtained from the Google Cloud Console
-    _call.requestHeaders[@"X-Goog-Api-Key"] = API_KEY;
+    _call.requestHeaders[@"X-Goog-Api-Key"] = apiKey;
     // if the API key has a bundle ID restriction, specify the bundle ID like this
     _call.requestHeaders[@"X-Ios-Bundle-Identifier"] = [[NSBundle mainBundle] bundleIdentifier];
     
@@ -69,8 +72,8 @@
     RecognitionConfig *recognitionConfig = [RecognitionConfig message];
     recognitionConfig.encoding = RecognitionConfig_AudioEncoding_Linear16;
     recognitionConfig.sampleRateHertz = self.sampleRate;
-    recognitionConfig.languageCode = @"en-US";
-    recognitionConfig.maxAlternatives = 10;
+    recognitionConfig.languageCode = locale;
+    recognitionConfig.maxAlternatives = [alternatives intValue];
     
     StreamingRecognitionConfig *streamingRecognitionConfig = [StreamingRecognitionConfig message];
     streamingRecognitionConfig.config = recognitionConfig;

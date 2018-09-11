@@ -16,6 +16,9 @@
 
 @interface RNGoogleVoiceModule () <AudioControllerDelegate>
 @property (nonatomic, strong) NSMutableData *audioData;
+@property (nonatomic, readwrite) NSString* locale;
+@property (nonatomic, readwrite) NSString* apiKey;
+@property (nonatomic, readwrite) NSNumber* alternatives;
 @end
 
 @implementation RNGoogleVoiceModule
@@ -39,11 +42,15 @@ RCT_EXPORT_MODULE(RNGoogleVoice)
 RCT_REMAP_METHOD(initialize,
                  locale:(nonnull NSString*)locale
                  apiKey:(nonnull NSString*)apiKey
+                 alternatives:(nonnull NSNumber*)alternatives
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
   [AudioController sharedInstance].delegate = self;
-  RCTLogInfo(@"initialize with locale: %@ and API_KEY", locale, apiKey);
+  self.locale = locale;
+  self.apiKey = apiKey;
+  self.alternatives = alternatives;
+  RCTLogInfo(@"initialize with locale: %@ and API_KEY %@", locale, apiKey);
 }
 
 RCT_REMAP_METHOD(startListening,
@@ -131,28 +138,58 @@ RCT_REMAP_METHOD(resumeListening,
   if ([self.audioData length] > chunk_size) {
     NSLog(@"SENDING");
     [[SpeechRecognitionService sharedInstance] streamAudioData:self.audioData
+                                                    withLocale:self.locale
+                                                    withApiKey:self.apiKey
+                                           withMaxAlternatives:self.alternatives
                                                 withCompletion:^(StreamingRecognizeResponse *response, NSError *error) {
                                                   if (error) {
-                                                    NSLog(@"ERROR: %@", error);
-//                                                    _textView.text = [error localizedDescription];
+                                                    RCTLogWarn(@"ERROR: %@", error);
                                                     [self stopListening];
                                                   } else if (response) {
                                                     BOOL finished = NO;
-                                                    NSLog(@"RESPONSE: %@", response);
+                                                    RCTLogInfo(@"RESPONSE: %@", response);
                                                     for (StreamingRecognitionResult *result in response.resultsArray) {
                                                       if (result.isFinal) {
                                                         finished = YES;
                                                       }
                                                     }
-//                                                    _textView.text = [response description];
+                                                    RCTLogInfo(@"Got response: %@", [response description]);
+                                                    NSArray *results = [self parseResponse:response];
+                                                    [self sendEventWithName:@"onSpeechPartialResults" body:@{@"results":results}];
                                                     if (finished) {
-                                                      //                                                      [self stopAudio:nil];
+                                                        [self sendEventWithName:@"onSpeechResults" body:@{@"results":results}];
                                                     }
                                                   }
                                                 }
      ];
     self.audioData = [[NSMutableData alloc] init];
   }
+}
+
+- (NSArray*) parseResponse:(StreamingRecognizeResponse*) originalResponse
+{
+  NSMutableArray *results = [NSMutableArray arrayWithCapacity:0];
+  
+  for (StreamingRecognitionResult *result in originalResponse.resultsArray) {
+    BOOL isFinal = result.isFinal;
+    float stability = result.stability;
+    NSMutableArray *alternatives = [NSMutableArray arrayWithCapacity:0];
+    
+    for (SpeechRecognitionAlternative *alternative in result.alternativesArray) {
+      [alternatives addObject:@{
+                                @"confidence":[NSNumber numberWithFloat:alternative.confidence],
+                                @"transcript":alternative.transcript
+                                }];
+    }
+    
+    [results addObject:@{
+                         @"isFinal":[NSNumber numberWithBool:isFinal],
+                         @"stability":[NSNumber numberWithFloat:stability],
+                         @"alternatives":alternatives
+                         }];
+  }
+  
+  return results;
 }
 
 
