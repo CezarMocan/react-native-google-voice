@@ -20,7 +20,7 @@
 #import <RxLibrary/GRXBufferedPipe.h>
 #import <ProtoRPC/ProtoRPC.h>
 
-#define API_KEY @"AIzaSyD-o08CQL91vezbKziBXYn9BuC7tL9wrMk"
+//#define API_KEY @"AIzaSyD-o08CQL91vezbKziBXYn9BuC7tL9wrMk"
 #define HOST @"speech.googleapis.com"
 
 @interface SpeechRecognitionService ()

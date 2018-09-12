@@ -51,6 +51,7 @@ RCT_REMAP_METHOD(initialize,
   self.apiKey = apiKey;
   self.alternatives = alternatives;
   RCTLogInfo(@"initialize with locale: %@ and API_KEY %@", locale, apiKey);
+  resolve(@{});
 }
 
 RCT_REMAP_METHOD(startListening,
