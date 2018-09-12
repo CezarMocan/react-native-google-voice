@@ -7,8 +7,6 @@ const { RNGoogleVoice } = NativeModules;
 // NativeEventEmitter is only availabe on React Native platforms, so this conditional is used to avoid import conflicts in the browser/server
 const speechEventEmitter = Platform.OS !== "web" ? new NativeEventEmitter(RNGoogleVoice) : null;
 
-const TEST_API_KEY = 'AIzaSyD-o08CQL91vezbKziBXYn9BuC7tL9wrMk'
-
 class GoogleVoice {
   constructor() {
     super()
