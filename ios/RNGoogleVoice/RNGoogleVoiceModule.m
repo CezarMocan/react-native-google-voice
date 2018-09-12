@@ -80,16 +80,22 @@ RCT_REMAP_METHOD(pauseListening,
                  pauseResolver:(RCTPromiseResolveBlock)resolve
                  pauseRejecter:(RCTPromiseRejectBlock)reject)
 {
-  RCTLogInfo(@"pauseListening");
-  resolve(@{});
+  if ([self stopListening]) {
+    resolve(@{});
+  } else {
+    reject(@"stop_listening_error", @"Encountered error in stopping listening", nil);
+  }
 }
 
 RCT_REMAP_METHOD(resumeListening,
                  resumeResolver:(RCTPromiseResolveBlock)resolve
                  resumeRejecter:(RCTPromiseRejectBlock)reject)
 {
-  RCTLogInfo(@"resumeListening");
-  resolve(@{});
+  if ([self startListening]) {
+    resolve(@{});
+  } else {
+    reject(@"failed_start_listening", @"Failed to start listening", nil);
+  }
 }
 
 -(BOOL)startListening
@@ -107,6 +113,7 @@ RCT_REMAP_METHOD(resumeListening,
     return false;
   }
   
+  [self sendEventWithName:@"onSpeechStart" body:@{}];
   return true;
 }
 
@@ -118,6 +125,8 @@ RCT_REMAP_METHOD(resumeListening,
   } @catch (NSException *e) {
     RCTLogWarn(@"Caught exception in stopListening: %@", e);
     return false;
+  } @finally {
+    [self sendEventWithName:@"onSpeechEnd" body:@{}];
   }
   return true;
 }

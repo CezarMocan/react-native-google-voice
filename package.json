@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "ios:start": "watchman watch-del-all && NODE_ENV=development node --expose-gc --max-old-space-size=4096 ./node_modules/.bin/react-native start --reset-cache"
   },
   "dependencies": {
     "react": "16.4.1",
