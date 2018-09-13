@@ -9,7 +9,6 @@ const speechEventEmitter = Platform.OS !== "web" ? new NativeEventEmitter(RNGoog
 
 class GoogleVoice {
   constructor() {
-    super()
     this._listeners = null
     this._events = {
       'onSpeechStart': this._onSpeechStart.bind(this),
@@ -19,7 +18,6 @@ class GoogleVoice {
       'onSpeechPartialResults': this._onSpeechPartialResults.bind(this),
       'onSpeechResults': this._onSpeechResults.bind(this),
       'onSpeechError': this._onSpeechError.bind(this),
-      'onSilenceDetected': this._onSilenceDetected.bind(this),
     }
   }
   destroy() {
@@ -87,11 +85,6 @@ class GoogleVoice {
   _onSpeechError(e) {
     if (this.onSpeechError) {
       this.onSpeechError(e)
-    }    
-  }
-  _onSilenceDetected(e) {
-    if (this.onSilenceDetected) {
-      this.onSilenceDetected(e)
     }    
   }
 }
