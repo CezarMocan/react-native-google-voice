@@ -163,7 +163,7 @@ RCT_REMAP_METHOD(resumeListening,
                                                         finished = YES;
                                                       }
                                                     }
-                                                    RCTLogInfo(@"Got response: %@", [response description]);
+//                                                    RCTLogInfo(@"Got response: %@", [response description]);
                                                     NSArray *results = [self parseResponse:response];
                                                     [self sendEventWithName:@"onSpeechPartialResults" body:@{@"results":results}];
                                                     if (finished) {
