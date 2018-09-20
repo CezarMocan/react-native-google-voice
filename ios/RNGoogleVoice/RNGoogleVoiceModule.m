@@ -157,7 +157,7 @@ RCT_REMAP_METHOD(resumeListening,
                                                     [self stopListening];
                                                   } else if (response) {
                                                     BOOL finished = NO;
-                                                    RCTLogInfo(@"RESPONSE: %@", response);
+//                                                    RCTLogInfo(@"RESPONSE: %@", response);
                                                     for (StreamingRecognitionResult *result in response.resultsArray) {
                                                       if (result.isFinal) {
                                                         finished = YES;

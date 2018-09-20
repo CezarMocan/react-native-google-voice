@@ -3173,6 +3173,10 @@ leven@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
 
+levenshtein-edit-distance@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/levenshtein-edit-distance/-/levenshtein-edit-distance-2.0.3.tgz#30b8d8b9ad94eabd4f8a9f5a10e2fd1f28c84bee"
+
 levn@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.3.0.tgz#3b09924edf9f083c0490fdd4c0bc4421e04764ee"
@@ -3284,6 +3288,10 @@ merge-stream@^1.0.1:
 merge@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/merge/-/merge-1.2.0.tgz#7531e39d4949c281a66b8c5a6e0265e8b05894da"
+
+metaphone@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/metaphone/-/metaphone-1.0.4.tgz#1dda44df5c25393eb57b555d00be6d70e2b3d5df"
 
 metro-babel-register@0.38.4, metro-babel-register@^0.38.1:
   version "0.38.4"
@@ -4744,6 +4752,10 @@ statuses@~1.4.0:
 stealthy-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
+
+stemmer@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/stemmer/-/stemmer-1.0.3.tgz#485655cd828da05e970d7a35c24d228ced6a4fba"
 
 stream-buffers@~2.2.0:
   version "2.2.0"

@@ -131,7 +131,7 @@ export default class App extends Component<Props> {
   }
 
   onSpeechPartialResults(e) {
-    // console.log('onSpeechPartial', e)
+    console.log('onSpeechPartial', e)
     const text = e.results.reduce((acc, result) => {
       return acc + result.alternatives[0].transcript
     }, '')
