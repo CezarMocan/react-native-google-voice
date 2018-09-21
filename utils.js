@@ -3,6 +3,9 @@ import levenshtein from 'levenshtein-edit-distance'
 import metaphone from 'metaphone'
 
 // .map(word => word.replace(/\W/g, ''))
+export const isPunctuation = (c) => {
+  return (c == '.' || c == ',' || c == ';' || c == '–' || c == '—' || c == ')' || c == ':')
+}
 
 export const textToArray = (text) => {
   return text.split(/ +/).filter(w => w != "").map(w => sanitize(w))

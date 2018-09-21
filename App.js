@@ -11,12 +11,12 @@ import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components'
 import GoogleVoice from './GoogleVoice'
 import { textToRead2, textToRead3, textToRead4, textToRead5, textToRead6, textToRead7, textToRead13, textToRead14, textToRead12, textToRead11, textToRead10, textToRead9, textToRead8 } from './Text'
-import { Part1, Part2, Part3, Part4, Part5 } from './GivingTree.js'
-import { similarityScore, textToArray } from './utils'
+import { Part1, Part2, Part3, Part4, Part5, Roxa1, Roxa2, Roxa3, Roxa4, Roxa5, Roxa6, Roxa7 } from './GivingTree.js'
+import { similarityScore, textToArray, sanitize, isPunctuation } from './utils'
 import clamp from 'lodash.clamp'
 
 // const TEXTS = [textToRead14, textToRead13, textToRead12, textToRead11, textToRead10, textToRead9, textToRead8, textToRead2, textToRead3, textToRead4, textToRead5, textToRead6, textToRead7]
-const TEXTS = [Part1, Part2, Part3, Part4, Part5]
+const TEXTS = [Part1, Part2, Part3, Part4, Part5, Roxa1, Roxa2, Roxa3, Roxa4, Roxa5, Roxa6, Roxa7]
 
 const TEST_API_KEY = 'AIzaSyD-o08CQL91vezbKziBXYn9BuC7tL9wrMk'
 
@@ -58,7 +58,7 @@ const StyledTextNext = styled(Text)`
   position: absolute;
   right: 0;
   top: 300px;
-  color: white;  
+  color: white;
   font-size: 30px;
   padding: 10px;
   background-color: black;
@@ -87,6 +87,7 @@ export default class App extends Component<Props> {
     this.onPressStop = this.onPressStop.bind(this)
     this.onPressClear = this.onPressClear.bind(this)
     this.onPressNext = this.onPressNext.bind(this)
+    this.onSwitchAlgo = this.onSwitchAlgo.bind(this)
 
     this.state = {
       totalText: '',
@@ -94,7 +95,8 @@ export default class App extends Component<Props> {
       completionIndex: -1,
       unstableCompletionIndex: -1,
       listening: false,
-      currTextToRead: 0
+      currTextToRead: 0,
+      smartAlgo: false
     }
 
     this._restartInterval = null
@@ -137,10 +139,7 @@ export default class App extends Component<Props> {
 
       const score = similarityScore(lastWord, textToRead[index])
       if (score >= 0.7) {
-        // console.log(type, ' ****** Matched: ', lastWord, textToRead[index])
         return index
-      } else if (score >= 0.5) {
-        // console.log(type, ' ****** Not mached: ', lastWord, textToRead[index], 'score: ', score)
       }
     }
 
@@ -165,7 +164,6 @@ export default class App extends Component<Props> {
       newCompletionIndex += 2
 
     this.setState({ completionIndex: newCompletionIndex }, () => {
-      console.log('Moving on? ', newCompletionIndex, TEXTS[currTextToRead].length - 1)
       if (newCompletionIndex == TEXTS[currTextToRead].length - 1) {
         this.onPressNext()
       }
@@ -191,9 +189,7 @@ export default class App extends Component<Props> {
     }
   }
 
-  onSpeechPartialResults(e) {
-    // console.log('onSpeechPartial', e)
-
+  processPartialSmart(e) {
     const fullText = e.results.reduce((acc, result) => {
       return acc + result.alternatives[0].transcript
     }, '')
@@ -216,6 +212,47 @@ export default class App extends Component<Props> {
     const newUnstableTextArray = textToArray(unstableText)
     this.advanceUnstableIndex(newUnstableTextArray)
     this.unstableTextArray = newUnstableTextArray
+  }
+
+  processPartialDumb(e) {
+    const { currTextToRead } = this.state
+    const text = e.results.reduce((acc, result) => {
+      return acc + result.alternatives[0].transcript
+    }, '')
+    const textToRead = TEXTS[this.state.currTextToRead]
+    const textArray = textToArray(text)//text.split(' ').filter(word => word != ' ' && word != '')
+
+    const lastWord = textArray[textArray.length - 1]
+
+    const chillFactor = 5
+    const { completionIndex } = this.state
+    let newCompletionIndex = completionIndex
+
+    for (let index = completionIndex + 1; index < completionIndex + chillFactor; index++) {
+      // console.log('Comparing: ', lastWord, textToRead[index])
+      if (newCompletionIndex > completionIndex) continue
+      if (index < textToRead.length && sanitize(lastWord) == sanitize(textToRead[index])) {
+        newCompletionIndex = index
+        // index = completionIndex + chillFactor
+      }
+    }
+
+    console.log(lastWord, newCompletionIndex, textToRead[newCompletionIndex], textToRead[newCompletionIndex + 1])
+
+    // console.log(newCompletionIndex, text)
+    this.setState({ text, completionIndex: newCompletionIndex, unstableCompletionIndex: newCompletionIndex }, () => {
+      if (newCompletionIndex == TEXTS[currTextToRead].length - 1) {
+        // setTimeout(this.onPressNext, 750)
+      }
+    })
+  }
+
+  onSpeechPartialResults(e) {
+    if (this.state.smartAlgo) {
+      this.processPartialSmart(e)
+    } else {
+      this.processPartialDumb(e)
+    }
   }
 
   async onPressStart() {
@@ -251,6 +288,13 @@ export default class App extends Component<Props> {
     })
   }
 
+  onSwitchAlgo() {
+    const { smartAlgo } = this.state
+    this.setState({ text: '', totalText: '', completionIndex: -1, unstableCompletionIndex: -1, smartAlgo: !smartAlgo })
+    this.stableTextArray = []
+    this.unstableTextArray = []
+  }
+
   async componentDidMount() {
     await GoogleVoice.initialize({
       locale: 'en-US',
@@ -260,7 +304,7 @@ export default class App extends Component<Props> {
   }
 
   render() {
-    const { text, totalText, completionIndex, unstableCompletionIndex, listening, currTextToRead } = this.state
+    const { text, totalText, completionIndex, unstableCompletionIndex, listening, currTextToRead, smartAlgo } = this.state
     const textToDisplay = totalText + text
     const textToRead = TEXTS[currTextToRead]
     // console.log('Texts: ', TEXTS, 'curr: ', currTextToRead)
@@ -276,13 +320,12 @@ export default class App extends Component<Props> {
             if (lastHlWord && lastHlWord.length) lastChar = lastHlWord[lastHlWord.length - 1]
             if (sLastHlWord && sLastHlWord.length) sLastChar = sLastHlWord[sLastHlWord.length - 1]
 
-            if (index > unstableCompletionIndex && 
-                index <= unstableCompletionIndex + 2 && 
-                unstableCompletionIndex > completionIndex && 
-                lastChar != '.' && 
-                lastChar != ',' && 
-                sLastChar != '.' && 
-                sLastChar != ',') 
+            if (smartAlgo &&
+                index > unstableCompletionIndex &&
+                index <= unstableCompletionIndex + 2 &&
+                unstableCompletionIndex > completionIndex &&
+                !isPunctuation(lastChar) &&
+                !isPunctuation(sLastChar))
               color = 'rgba(128, 0, 128, 1)'
             if (index > completionIndex && index <= unstableCompletionIndex)
               color = 'rgba(128, 0, 200, 1)'
@@ -307,7 +350,11 @@ export default class App extends Component<Props> {
            <StyledTextButton>Clear</StyledTextButton>
           </TouchableOpacity>
 
-          <StyledText>[ isListening: {listening ? '✅' : '🛑'} ]</StyledText>
+          <TouchableOpacity onPress={this.onSwitchAlgo}>
+           <StyledTextButton>{smartAlgo ? 'Go to Naive Algo' : 'Go to Smarter Algo'}</StyledTextButton>
+          </TouchableOpacity>          
+
+          <StyledText>{listening ? '✅' : '🛑'}</StyledText>
 
         </BottomView>
         <TouchableOpacity onPress={this.onPressNext}>
