@@ -2,6 +2,8 @@ import stemmer from 'stemmer'
 import levenshtein from 'levenshtein-edit-distance'
 import metaphone from 'metaphone'
 
+// .map(word => word.replace(/\W/g, ''))
+
 export const textToArray = (text) => {
   return text.split(/ +/).filter(w => w != "").map(w => sanitize(w))
 }
@@ -11,7 +13,8 @@ export const sanitize = (w) => {
 }
 
 export const similarityScore = (word1, word2) => {
-  // console.log('Words: ', word1, word2)
+  // console.log('Words: ', word1, word2)  
+
   if (!word1 || !word2) return 0
 
   const sanitized1 = sanitize(word1)

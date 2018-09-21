@@ -10,10 +10,13 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import styled from 'styled-components'
 import GoogleVoice from './GoogleVoice'
-import { textToRead2, textToRead3, textToRead4, textToRead5, textToRead6, textToRead7 } from './Text'
+import { textToRead2, textToRead3, textToRead4, textToRead5, textToRead6, textToRead7, textToRead13, textToRead14, textToRead12, textToRead11, textToRead10, textToRead9, textToRead8 } from './Text'
+import { Part1, Part2, Part3, Part4, Part5 } from './GivingTree.js'
 import { similarityScore, textToArray } from './utils'
+import clamp from 'lodash.clamp'
 
-const TEXTS = [textToRead2, textToRead3, textToRead4, textToRead5, textToRead6, textToRead7]
+// const TEXTS = [textToRead14, textToRead13, textToRead12, textToRead11, textToRead10, textToRead9, textToRead8, textToRead2, textToRead3, textToRead4, textToRead5, textToRead6, textToRead7]
+const TEXTS = [Part1, Part2, Part3, Part4, Part5]
 
 const TEST_API_KEY = 'AIzaSyD-o08CQL91vezbKziBXYn9BuC7tL9wrMk'
 
@@ -45,20 +48,31 @@ const TextContainer = styled(View)`
   max-height: 300px;
 `
 
-const StyledText = styled(Text)`
-  color: black;
-  font-size: 16px;
-`
-
 const StyledTextButton = styled(Text)`
   color: black;
   font-size: 20px;
   margin: 0 10px;
 `
 
+const StyledTextNext = styled(Text)`
+  position: absolute;
+  right: 0;
+  top: 300px;
+  color: white;  
+  font-size: 30px;
+  padding: 10px;
+  background-color: black;
+`
+
+const StyledText = styled(Text)`
+  color: black;
+  font-size: 20px;
+`
+
 const ReadText = styled(Text)`
   color: ${props => props.color};
-  font-size: 16px;
+  font-size: 36px;
+  line-height: 44px;
 `
 
 export default class App extends Component<Props> {
@@ -106,7 +120,7 @@ export default class App extends Component<Props> {
   onSpeechResults(e) {
     this.setState({
       totalText: this.state.totalText + this.state.text,
-      unstableCompletionIndex: this.state.completionIndex,
+      completionIndex: this.state.unstableCompletionIndex,
       text: ''
     })
     this.stableTextArray = []
@@ -114,15 +128,20 @@ export default class App extends Component<Props> {
     // console.log('onSpeechResults', e)
   }
 
-  processSpeech(completionIndex, lastWord, chillFactor = 3) {
+  processSpeech(type, completionIndex, lastWord, chillFactor = 3) {
     const textToRead = TEXTS[this.state.currTextToRead]
-    // const chillFactor = 3
-
-    let newCompletionIndex = completionIndex
 
     for (let index = completionIndex + 1; index <= Math.min(completionIndex + chillFactor, textToRead.length); index++) {
+      // Prevent from matching short words too far ahead.
+      if (index - completionIndex > 4 && lastWord.length < 4) continue
+
       const score = similarityScore(lastWord, textToRead[index])
-      if (score >= 0.66) return index
+      if (score >= 0.7) {
+        // console.log(type, ' ****** Matched: ', lastWord, textToRead[index])
+        return index
+      } else if (score >= 0.5) {
+        // console.log(type, ' ****** Not mached: ', lastWord, textToRead[index], 'score: ', score)
+      }
     }
 
     return completionIndex
@@ -131,12 +150,26 @@ export default class App extends Component<Props> {
   advanceStableIndex(newStableTextArray, fullText) {
     const oldStableTextArray = this.stableTextArray
 
-    let { completionIndex } = this.state
+    let { unstableCompletionIndex, completionIndex, currTextToRead } = this.state
+    let newCompletionIndex = completionIndex
+
+    // let lookAhead = clamp(oldStableTextArray.length - completionIndex, 2, 6)
+    let lookAhead = 4
 
     for (let nI = oldStableTextArray.length; nI < newStableTextArray.length; nI++) {
-      completionIndex = this.processSpeech(completionIndex, newStableTextArray[nI])
-      this.setState({ completionIndex })
+      newCompletionIndex = this.processSpeech('STABLE', newCompletionIndex, newStableTextArray[nI], lookAhead)
     }
+
+    // Forced recovery when falling behind
+    if (newCompletionIndex == this.state.completionIndex && oldStableTextArray.length - newCompletionIndex >= 6)
+      newCompletionIndex += 2
+
+    this.setState({ completionIndex: newCompletionIndex }, () => {
+      console.log('Moving on? ', newCompletionIndex, TEXTS[currTextToRead].length - 1)
+      if (newCompletionIndex == TEXTS[currTextToRead].length - 1) {
+        this.onPressNext()
+      }
+    })
 
     this.stableTextArray = newStableTextArray
   }
@@ -144,10 +177,13 @@ export default class App extends Component<Props> {
   advanceUnstableIndex(newUnstableTextArray, fullText) {
     const oldUnstableTextArray = this.unstableTextArray
 
-    let { completionIndex } = this.state
+    let { completionIndex, unstableCompletionIndex } = this.state
+    // let lookAhead = clamp(Math.abs(this.stableTextArray.length - completionIndex), 4, 6)
+    // let lookAhead = 4
+    let lookAhead = clamp(3 + (unstableCompletionIndex - completionIndex), 0, 7)
 
     for (let nI = 0; nI < newUnstableTextArray.length; nI++) {
-      completionIndex = this.processSpeech(completionIndex, newUnstableTextArray[nI], 4)
+      completionIndex = this.processSpeech('UNSTABLE', completionIndex, newUnstableTextArray[nI], lookAhead)
 
       if (completionIndex > this.state.unstableCompletionIndex) {
         this.setState({ unstableCompletionIndex: completionIndex })
@@ -156,7 +192,7 @@ export default class App extends Component<Props> {
   }
 
   onSpeechPartialResults(e) {
-    console.log('onSpeechPartial', e)
+    // console.log('onSpeechPartial', e)
 
     const fullText = e.results.reduce((acc, result) => {
       return acc + result.alternatives[0].transcript
@@ -180,26 +216,6 @@ export default class App extends Component<Props> {
     const newUnstableTextArray = textToArray(unstableText)
     this.advanceUnstableIndex(newUnstableTextArray)
     this.unstableTextArray = newUnstableTextArray
-
-    // console.log('prev unstableText is: ', this.unstableTextArray)
-    // console.log('unstableText is: ', unstableTextArray)
-
-    // let startPosition = Math.max(this.unstableTextArray.length - 1, 0)
-    // if (this.unstableTextArray.length == unstableTextArray.length) {
-    //   while (this.unstableTextArray[startPosition] != unstableTextArray[startPosition] && startPosition > 0)
-    //     startPosition--
-    // }
-
-    // let lastMatchIndex = startPosition - 1
-    // for (let i = startPosition; i < unstableTextArray.length; i++) {
-    //   console.log('Calling unstableText recognition for: ', unstableTextArray[i])
-    //   const foundMatch = this.processSpeech(fullText, unstableTextArray[i])
-    //   if (foundMatch) lastMatchIndex = i
-    // }
-
-    // this.stableTextArray = stableTextArray
-    // this.unstableTextArray = unstableTextArray.slice(lastMatchIndex + 1)
-    // ^ is wrong--what we need is to exclude the already matched words from being called processSpeech() on again.
   }
 
   async onPressStart() {
@@ -247,27 +263,36 @@ export default class App extends Component<Props> {
     const { text, totalText, completionIndex, unstableCompletionIndex, listening, currTextToRead } = this.state
     const textToDisplay = totalText + text
     const textToRead = TEXTS[currTextToRead]
+    // console.log('Texts: ', TEXTS, 'curr: ', currTextToRead)
     // const unstableCompletionIndex = completionIndex + 2
+    // console.log('Text to read: ', textToRead)
     return (
       <StyledContainer>
-        <View style={{marginBottom: 25}}>
-          <StyledText>Google Speech Recognition</StyledText>
-        </View>
-
         <TextContainer>
-          { textToRead.map((word, index) => {
-            let color = 'black'
+          { textToRead.map((word, index, arr) => {
+            let color = 'black', lastChar = '', lastHlWord, sLastChar = '', sLastHlWord
+            lastHlWord = arr[unstableCompletionIndex]
+            sLastHlWord = arr[unstableCompletionIndex + 1]
+            if (lastHlWord && lastHlWord.length) lastChar = lastHlWord[lastHlWord.length - 1]
+            if (sLastHlWord && sLastHlWord.length) sLastChar = sLastHlWord[sLastHlWord.length - 1]
+
+            if (index > unstableCompletionIndex && 
+                index <= unstableCompletionIndex + 2 && 
+                unstableCompletionIndex > completionIndex && 
+                lastChar != '.' && 
+                lastChar != ',' && 
+                sLastChar != '.' && 
+                sLastChar != ',') 
+              color = 'rgba(128, 0, 128, 1)'
             if (index > completionIndex && index <= unstableCompletionIndex)
-              color = 'blue'
+              color = 'rgba(128, 0, 200, 1)'
             if (index <= completionIndex)
-              color = 'green'
+              color = 'rgba(128, 0, 255, 1)'
+            if (index <= unstableCompletionIndex - 4)
+              color = 'black'
             return (<ReadText color={color}>{word} </ReadText>)
           })}
         </TextContainer>
-
-        <View>
-          <StyledText>{textToDisplay}</StyledText>
-        </View>
 
         <BottomView>
           <TouchableOpacity onPress={this.onPressStart}>
@@ -282,14 +307,23 @@ export default class App extends Component<Props> {
            <StyledTextButton>Clear</StyledTextButton>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.onPressNext}>
-           <StyledTextButton>[Next text]</StyledTextButton>
-          </TouchableOpacity>
-
           <StyledText>[ isListening: {listening ? '✅' : '🛑'} ]</StyledText>
-        </BottomView>
 
+        </BottomView>
+        <TouchableOpacity onPress={this.onPressNext}>
+         <StyledTextNext>[Next text]</StyledTextNext>
+        </TouchableOpacity>
       </StyledContainer>
     )
   }
+
+/*
+        <View style={{marginBottom: 25}}>
+          <StyledText>Google Speech Recognition</StyledText>
+        </View>
+
+        <View>
+          <StyledText>{textToDisplay}</StyledText>
+        </View>
+*/
 }
